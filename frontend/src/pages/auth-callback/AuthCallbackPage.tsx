@@ -10,6 +10,10 @@ const AuthCallbackPage = () => {
 	const navigate = useNavigate();
 	const syncAttempted = useRef(false); // useRef is a hook that will be used to store the syncAttempted value
 
+    // useRef is store that persists across renders
+    // it does not trigger re-renders when the value changes
+    // it is useful for storing values that you want to persist across renders
+    
 	useEffect(() => {
 		const syncUser = async () => {
 			// if the user is not loaded or the user is not loaded or the syncAttempted value is true, return
