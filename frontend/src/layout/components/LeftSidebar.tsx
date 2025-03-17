@@ -65,7 +65,7 @@ function LeftSidebar() {
                 <PlaylistSkeleton />
               ) : (
                 albums.map((album) => (
-                  <Link to={`/album/${album._id}`}
+                  <Link to={`/albums/${album._id}`}
                   key={album._id}
                   className="p2 hover:bg-zinc-800 rounded-md flex items-center gap-3 group cursor-pointer"
                   >
