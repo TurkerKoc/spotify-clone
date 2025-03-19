@@ -2,14 +2,12 @@ import { SignedIn, SignedOut, UserButton, SignOutButton } from "@clerk/clerk-rea
 import { LayoutDashboardIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import SignInOAuthButtons from "./SignInOAuthButtons";
-// import { useAuthStore } from "@/stores/useAuthStore";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "./ui/button";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 const Topbar = () => {
-	// const { isAdmin } = useAuthStore();
-  const isAdmin = false;
-	console.log({ isAdmin });
+  const isAdmin = useAuthStore((state) => state.isAdmin);
 
 	return (
 		<div

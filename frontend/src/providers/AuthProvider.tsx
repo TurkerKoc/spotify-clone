@@ -1,4 +1,5 @@
 import axiosInstance from "@/lib/axios"
+import { useAuthStore } from "@/stores/useAuthStore"
 import { useAuth } from "@clerk/clerk-react"
 import { Loader } from "lucide-react"
 import { useEffect, useState } from "react"
@@ -16,13 +17,16 @@ const updateApiToken = async (token: string | null) => {
 const AuthProvider = ({ children }: { children: React.ReactNode }) => { // children is the app that will be wrapped
   const { getToken } = useAuth() // get the token and user id from the clerk
   const [loading, setLoading] = useState(true); // loading state
-
+  const { checkAdminStatus } = useAuthStore();
+  
   useEffect(() => {
     const initAuth = async () => {
       try {
         const token = await getToken()
         updateApiToken(token)
-        
+        if (token) { // if there is a token, check if the user is an admin
+          await checkAdminStatus();
+        }
       } catch (error) {
         updateApiToken(null); // if there is an error, set the token to null
         console.error(error)
