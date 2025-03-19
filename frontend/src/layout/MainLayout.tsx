@@ -4,6 +4,7 @@ import { Outlet } from "react-router-dom"
 import LeftSideBar from "./components/LeftSidebar"
 import FriendsActivity from "./components/FriendsActivity";
 import AudioPlayer from "@/layout/components/AudioPlayer";
+import { PlaybackControls } from "./components/PlaybackControls";
 
 function MainLayout() {
   const isMobile = false;  
@@ -32,6 +33,9 @@ function MainLayout() {
             <FriendsActivity />
         </ResizablePanel>
     </ResizablePanelGroup>
+
+    {/* playback controls */}
+    <PlaybackControls />
     </div>
   )
 }
