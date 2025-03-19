@@ -2,9 +2,8 @@ import Topbar from "@/components/Topbar"
 
 function HomePage() {
   return (
-    <div>
+    <div className="rounded-md overflow-hidden">
       <Topbar />
-      <h1>Home Page</h1>
     </div>
   )
 }

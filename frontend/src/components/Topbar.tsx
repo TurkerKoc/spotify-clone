@@ -1,4 +1,4 @@
-import { SignedIn, SignedOut, UserButton, SignOutButton } from "@clerk/clerk-react";
+import { SignedOut, UserButton } from "@clerk/clerk-react";
 import { LayoutDashboardIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import SignInOAuthButtons from "./SignInOAuthButtons";
@@ -16,7 +16,7 @@ const Topbar = () => {
     '
 		>
 			<div className='flex gap-2 items-center'>
-				{/* <img src='/spotify.png' className='size-8' alt='Spotify logo' /> */}
+				<img src='./spotify.png' className='size-8' alt='Spotify logo' />
 				Spotify
 			</div>
 			<div className='flex items-center gap-4'>
@@ -27,11 +27,6 @@ const Topbar = () => {
 						Admin Dashboard
 					</Link>
 				)}
-
-        {/* if the user is signed in, show the user button */}
-        <SignedIn>
-          <SignOutButton />
-        </SignedIn>
 
         {/* if the user is not signed in, show the sign in buttons */}
 				<SignedOut>
