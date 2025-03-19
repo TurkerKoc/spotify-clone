@@ -26,18 +26,19 @@ const AlbumPage = () => {
 	const handlePlayAlbum = () => {
 		if (!currentAlbum) return;
 
+		// check if the current song is in the album
 		const isCurrentAlbumPlaying = currentAlbum?.songs.some((song) => song._id === currentSong?._id);
-		if (isCurrentAlbumPlaying) togglePlay();
+		if (isCurrentAlbumPlaying) togglePlay(); // toggle the play state
 		else {
 			// start playing the album from the beginning
-			playAlbum(currentAlbum?.songs, 0);
+			playAlbum(currentAlbum?.songs, 0); 
 		}
 	};
 
 	const handlePlaySong = (index: number) => {
-		if (!currentAlbum) return;
+		if (!currentAlbum) return; // if the current album is not found, return
 
-		playAlbum(currentAlbum?.songs, index);
+		playAlbum(currentAlbum?.songs, index); // play the album from the song at the given index
 	};
 
 	return (
@@ -79,8 +80,8 @@ const AlbumPage = () => {
 								className='w-14 h-14 rounded-full bg-green-500 hover:bg-green-400 
                 hover:scale-105 transition-all'
 							>
-								{isPlaying && currentAlbum?.songs.some((song) => song._id === currentSong?._id) ? (
-									<Pause className='h-7 w-7 text-black' />
+								{isPlaying && currentAlbum?.songs.some((song) => song._id === currentSong?._id) ? ( // check if the current song is in the album
+									<Pause className='h-7 w-7 text-black' /> // pause the song
 								) : (
 									<Play className='h-7 w-7 text-black' />
 								)}

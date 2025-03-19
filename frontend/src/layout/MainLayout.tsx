@@ -3,11 +3,16 @@ import { ResizablePanelGroup } from "@/components/ui/resizable"
 import { Outlet } from "react-router-dom"
 import LeftSideBar from "./components/LeftSidebar"
 import FriendsActivity from "./components/FriendsActivity";
+import AudioPlayer from "@/layout/components/AudioPlayer";
+
 function MainLayout() {
   const isMobile = false;  
   return (
     <div className="h-screen bg-black text-white flex flex-col">
     <ResizablePanelGroup direction="horizontal" className="flex-1 flex h-full overflow-hidden p-2">
+        {/* audio player to play songs */}
+        <AudioPlayer />
+
         {/* leftSideBar */}
         <ResizablePanel defaultSize={20} minSize={isMobile ? 0 : 10} maxSize={30}>
             <LeftSideBar />

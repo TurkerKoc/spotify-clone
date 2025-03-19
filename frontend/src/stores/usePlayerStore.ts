@@ -8,12 +8,12 @@ interface PlayerStore {
 	queue: Song[];
 	currentIndex: number;
 
-	initializeQueue: (songs: Song[]) => void;
-	playAlbum: (songs: Song[], startIndex?: number) => void;
-	setCurrentSong: (song: Song | null) => void;
-	togglePlay: () => void;
-	playNext: () => void;
-	playPrevious: () => void;
+	initializeQueue: (songs: Song[]) => void; 	// array of songs into a queue
+	playAlbum: (songs: Song[], startIndex?: number) => void; 	// play an album
+	setCurrentSong: (song: Song | null) => void; 	// set the current song
+	togglePlay: () => void; 	// toggle the play state
+	playNext: () => void; 	// play the next song
+	playPrevious: () => void; 	// play the previous song
 }
 
 export const usePlayerStore = create<PlayerStore>((set, get) => ({
@@ -24,9 +24,9 @@ export const usePlayerStore = create<PlayerStore>((set, get) => ({
 
 	initializeQueue: (songs: Song[]) => {
 		set({
-			queue: songs,
-			currentSong: get().currentSong || songs[0],
-			currentIndex: get().currentIndex === -1 ? 0 : get().currentIndex,
+			queue: songs, // array of songs into a queue
+			currentSong: get().currentSong || songs[0], // set the current song
+			currentIndex: get().currentIndex === -1 ? 0 : get().currentIndex, // set the current index
 		});
 	},
 
@@ -51,7 +51,7 @@ export const usePlayerStore = create<PlayerStore>((set, get) => ({
 	},
 
 	setCurrentSong: (song: Song | null) => {
-		if (!song) return;
+		if (!song) return; // if there is no song, return
 
 		// const socket = useChatStore.getState().socket;
 		// if (socket.auth) {
@@ -61,6 +61,7 @@ export const usePlayerStore = create<PlayerStore>((set, get) => ({
 		// 	});
 		// }
 
+		// find the index of the song in the queue
 		const songIndex = get().queue.findIndex((s) => s._id === song._id);
 		set({
 			currentSong: song,
@@ -69,8 +70,8 @@ export const usePlayerStore = create<PlayerStore>((set, get) => ({
 		});
 	},
 
-	togglePlay: () => {
-		const willStartPlaying = !get().isPlaying;
+	togglePlay: () => {		
+		const willStartPlaying = !get().isPlaying; // toggle the play state
 
 		// const currentSong = get().currentSong;
 		// const socket = useChatStore.getState().socket;
@@ -88,12 +89,12 @@ export const usePlayerStore = create<PlayerStore>((set, get) => ({
 	},
 
 	playNext: () => {
-		const { currentIndex, queue } = get();
-		const nextIndex = currentIndex + 1;
+		const { currentIndex, queue } = get(); // get the current index and queue
+		const nextIndex = currentIndex + 1; // get the next index
 
 		// if there is a next song to play, let's play it
 		if (nextIndex < queue.length) {
-			const nextSong = queue[nextIndex];
+			const nextSong = queue[nextIndex]; // get the next song
 
 			// const socket = useChatStore.getState().socket;
 			// if (socket.auth) {
