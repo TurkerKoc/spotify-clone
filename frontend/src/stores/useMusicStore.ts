@@ -1,6 +1,7 @@
 import axiosInstance from "@/lib/axios";
 import { create } from "zustand";
-import { Album, Song } from "@/types";
+import { Album, Song, Stats } from "@/types";
+import toast from "react-hot-toast";
 
 // We need this interface to type the store
 // Otherwise, the store will be of type any
@@ -13,6 +14,7 @@ interface MusicStore {
   madeForYouSongs: Song[];
   featuredSongs: Song[];
   trendingSongs: Song[];
+  stats: Stats;
 
   // fetch albums
   fetchAlbums: () => Promise<void>;
@@ -28,6 +30,18 @@ interface MusicStore {
 
   // fetch trending songs
   fetchTrendingSongs: () => Promise<void>;
+
+  // fetch stats
+  fetchStats: () => Promise<void>;
+
+  // fetch songs
+  fetchSongs: () => Promise<void>;
+
+  // delete song
+  deleteSong: (id: string) => Promise<void>;
+
+  // delete album
+  deleteAlbum: (id: string) => Promise<void>;
 }
 
 export const useMusicStore = create<MusicStore>((set) => ({
@@ -39,6 +53,13 @@ export const useMusicStore = create<MusicStore>((set) => ({
   madeForYouSongs: [],
   trendingSongs: [],
   featuredSongs: [],
+  stats: {
+    totalSongs: 0,
+    totalAlbums: 0,
+    totalUsers: 0,
+    totalArtists: 0,
+  },
+  
   // fetch albums
   fetchAlbums: async () => {
 		set({ isLoading: true, error: null });
@@ -107,4 +128,70 @@ export const useMusicStore = create<MusicStore>((set) => ({
       set({ isLoading: false });
     }
   },
+
+  // fetch songs
+  fetchSongs: async () => {
+    set({ isLoading: true, error: null });
+
+    try {
+      const response = await axiosInstance.get("/songs");
+      set({ songs: response.data });
+    } catch (error: any) {
+      set({ error: error.message });
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+
+  // fetch stats
+  fetchStats: async () => {
+    set({ isLoading: true, error: null });
+
+    try {
+      const response = await axiosInstance.get("/stats");
+      set({ stats: response.data });
+    } catch (error: any) {
+      set({ error: error.message });
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+
+  // delete song
+	deleteSong: async (id) => {
+		set({ isLoading: true, error: null });
+		try {
+			await axiosInstance.delete(`/admin/songs/${id}`);
+
+      // get the current state and filter out the song with the id from songs array
+			set((state) => ({
+				songs: state.songs.filter((song) => song._id !== id),
+			}));
+			toast.success("Song deleted successfully");
+		} catch (error: any) {
+			console.log("Error in deleteSong", error);
+			toast.error("Error deleting song");
+		} finally {
+			set({ isLoading: false });
+		}
+	},
+
+  // delete album
+	deleteAlbum: async (id) => {
+		set({ isLoading: true, error: null });
+		try {
+			await axiosInstance.delete(`/admin/albums/${id}`);
+			set((state) => ({
+				albums: state.albums.filter((album) => album._id !== id),
+				songs: state.songs.map((song) =>
+					song.albumId === state.albums.find((a) => a._id === id)?.title ? { ...song, album: null } : song
+				),
+			}));
+			toast.success("Album deleted successfully");
+		} catch (error: any) {
+			toast.error("Failed to delete album: " + error.message);
+		} finally {
+			set({ isLoading: false });
+		}
+	},
 }));
