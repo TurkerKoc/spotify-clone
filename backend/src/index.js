@@ -24,8 +24,9 @@ const __dirname = path.resolve();
 const app = express();
 const PORT = process.env.PORT;
 
-const httpServer = createServer(app);
-initializeSocket(httpServer);
+// httpServer is a server which means it can handle http requests
+const httpServer = createServer(app); // create a server
+initializeSocket(httpServer); // initialize the socket
 
 app.use(
 	cors({
