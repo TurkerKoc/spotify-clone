@@ -1,5 +1,6 @@
 import axiosInstance from "@/lib/axios"
 import { useAuthStore } from "@/stores/useAuthStore"
+import { useChatStore } from "@/stores/useChatStore"
 import { useAuth } from "@clerk/clerk-react"
 import { Loader } from "lucide-react"
 import { useEffect, useState } from "react"
@@ -15,10 +16,11 @@ const updateApiToken = async (token: string | null) => {
 
 // this is a provider that will wrap the app and provide the auth context to the app
 const AuthProvider = ({ children }: { children: React.ReactNode }) => { // children is the app that will be wrapped
-  const { getToken } = useAuth() // get the token and user id from the clerk
+  const { getToken, userId } = useAuth() // get the token and user id from the clerk
   const [loading, setLoading] = useState(true); // loading state
   const { checkAdminStatus } = useAuthStore();
-  
+  const { initSocket, disconnectSocket } = useChatStore();
+
   useEffect(() => {
     const initAuth = async () => {
       try {
@@ -26,6 +28,11 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => { // child
         updateApiToken(token)
         if (token) { // if there is a token, check if the user is an admin
           await checkAdminStatus();
+          // as soon as the user is logged in, initialize the socket
+          if(userId) {
+            console.log("initializing socket", userId);
+            initSocket(userId);
+          }
         }
       } catch (error) {
         updateApiToken(null); // if there is an error, set the token to null
@@ -35,7 +42,12 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => { // child
       }
     }
     initAuth()
-  }, [getToken]);  // adding getToken here means that the function will only run when the token changes
+
+    // if user closes the tab, the socket will be disconnected
+    return () => {
+      disconnectSocket();
+    }
+  }, [getToken, userId, initSocket, disconnectSocket, checkAdminStatus]);  // adding getToken here means that the function will only run when the token changes
 
 	if (loading)
 		return (

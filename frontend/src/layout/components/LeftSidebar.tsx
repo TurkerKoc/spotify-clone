@@ -1,8 +1,8 @@
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { HomeIcon, Library, MessageCircle } from "lucide-react";
+import { HomeIcon, Library } from "lucide-react";
 import { Link } from "react-router-dom";
-import { SignedIn } from "@clerk/clerk-react";
+// import { SignedIn } from "@clerk/clerk-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import PlaylistSkeleton from "@/components/skeletons/PlaylistSkeleton";
 import { useEffect } from "react";
@@ -34,7 +34,7 @@ function LeftSidebar() {
               <HomeIcon className="mr-2 size-5" />
               <span className="hidden md:inline">Home</span>
             </Link>
-            <SignedIn>
+            {/* <SignedIn>
               <Link to={"/chat"}
                 className={cn(
                   buttonVariants({
@@ -46,7 +46,7 @@ function LeftSidebar() {
                 <MessageCircle className="mr-2 size-5" />
                 <span className="hidden md:inline">Messages</span>
               </Link>
-            </SignedIn>
+            </SignedIn> */}
           </div>
         </div>
 
