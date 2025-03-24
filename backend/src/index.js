@@ -72,7 +72,10 @@ app.use("/api/albums", albumRoutes);
 app.use("/api/stats", statRoutes);
 
 if (process.env.NODE_ENV === "production") {
+	// static assets
 	app.use(express.static(path.join(__dirname, "../frontend/dist")));
+	// any request that doesn't match the above routes will be redirected to the index.html file in frontend/dist
+	// !!!! RUN npm run build in frontend to generate the dist folder !!!!
 	app.get("*", (req, res) => {
 		res.sendFile(path.resolve(__dirname, "../frontend", "dist", "index.html"));
 	});
